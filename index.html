@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thế giới bất động</title>
+    <script src="Mobile.js"></script>
+</head>
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 300px;
+        margin: auto;
+        text-align: center;
+        font-family: arial;
+        float: left;
+        margin-right: 20px;
+    }
+
+    .price {
+        color: grey;
+        font-size: 22px;
+    }
+
+    .card button {
+        border: none;
+        outline: 0;
+        padding: 12px;
+        color: white;
+        background-color: #000;
+        text-align: center;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+    }
+
+    .card button:hover {
+        opacity: 0.7;
+    }
+    #product-list{
+        width: 80%;
+        float: left;
+    }
+    #cart{
+        width: 20%;
+        float: left;
+        background-color: bisque;
+        min-height: 500px;
+    }
+</style>
+<body>
+<button>ADD PRODUCT</button>
+<form>
+    <input type="text" placeholder="Product Name" id="name">
+    <input type="text" placeholder="Product Price" id="price">
+    <input type="text" placeholder="Image Link" id="image">
+    <button type="button" onclick="addProduct()">ADD</button>
+    <button>CANCEL</button>
+</form>
+<div id="product-list"></div>
+<div id="cart"></div>
+
+
+<script>
+    let mobiles = convertToObject();
+    console.log(mobiles)
+
+    function display() {
+        let str = "";
+        for (let i = 0; i < mobiles.length; i++) {
+            mobiles[i].id = i;
+            str += mobiles[i].getHtml();
+        }
+        document.getElementById('product-list').innerHTML = str;
+    }
+
+    function addProduct() {
+        let name = document.getElementById('name').value;
+        let price = document.getElementById('price').value;
+        let imageLink = document.getElementById('image').value;
+        let product = new Mobile(name, price, imageLink);
+        mobiles.push(product);
+        display();
+        saveData();
+    }
+    
+    function removeProduct(index) {
+        mobiles.splice(index,1);
+        saveData();
+        display();
+    }
+
+
+    function saveData() {
+        //Local storage chi luu tru duoc string
+        //JSON.stringify - Convert array ve string
+        //JSON.parse - Conver string to array
+        localStorage.setItem('tgdd',JSON.stringify(mobiles));
+    }
+
+    function loadData() {
+        let data = localStorage.getItem('tgdd');//string
+        let dataArray = JSON.parse(data);// String => Array
+        return dataArray;
+    }
+
+    function convertToObject() {
+        let data = loadData();
+        let arr = [];
+        for (let i = 0; i < data.length; i++) {
+            let product = new Mobile(data[i].name,data[i].price,data[i].image);
+            arr.push(product);
+        }
+        return arr;
+    }
+
+    display();
+</script>
+</body>
+</html>

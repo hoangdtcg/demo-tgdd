@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p id="score">0</p>
+<button onclick="increase()">Count</button>
+
+<script>
+  function increase() {
+    let num = +localStorage.getItem('count');
+    num++;
+    document.getElementById('score').innerHTML = num;
+    localStorage.setItem('count',num)
+  }
+  increase();
+</script>
+</body>
+</html>
